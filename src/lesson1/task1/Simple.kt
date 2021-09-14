@@ -74,7 +74,10 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = seconds + minutes * 6
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = 0.04445 * (16 * (3 * sagenes + arshins) + vershoks)
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
+    val Meters = 0.04445 * (16 * (3 * sagenes + arshins) + vershoks)
+    return Meters
+}
 
 /**
  * Тривиальная (1 балл)
@@ -90,7 +93,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg * 3600 + min * 60
  * Найти длину отрезка, соединяющего точки на плоскости с координатами (x1, y1) и (x2, y2).
  * Например, расстояние между (3, 0) и (0, 4) равно 5
  */
-fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr((x2 - x1)) + sqr((y2 - y1)))
+fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(sqr(x2 - x1) + sqr(y2 - y1))
 
 /**
  * Простая (2 балла)
@@ -98,7 +101,7 @@ fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double = sqrt(s
  * Пользователь задает целое число, большее 100 (например, 3801).
  * Определить третью цифру справа в этом числе (в данном случае 8).
  */
-fun thirdDigit(number: Int): Int = (number / 100)%10
+fun thirdDigit(number: Int): Int = (number / 100) % 10
 
 /**
  * Простая (2 балла)
@@ -108,9 +111,9 @@ fun thirdDigit(number: Int): Int = (number / 100)%10
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
 fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int {
-    val Depart = hoursDepart * 60 + minutesDepart
-    val Arrive = hoursArrive * 60 + minutesArrive
-    return Arrive - Depart
+    val depart = hoursDepart * 60 + minutesDepart
+    val arrive = hoursArrive * 60 + minutesArrive
+    return arrive - depart
 }
 
 /**
@@ -121,11 +124,11 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
 fun accountInThreeYears(initial: Int, percent: Int): Double {
-    val DoublePercent: Double = percent.toDouble() * 0.01 + 1
-    val FirstYear = initial * DoublePercent
-    val SecondYear = FirstYear * DoublePercent
-    val ThirdYear = SecondYear * DoublePercent
-    return ThirdYear
+    val doublePercent = percent.toDouble() * 0.01 + 1
+    val firstYear = initial * doublePercent
+    val secondYear = firstYear * doublePercent
+    val thirdYear = secondYear * doublePercent
+    return thirdYear
 }
 
 /**
