@@ -172,11 +172,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (c < a && b < d) return b - a
-    else if (a < c && d < b) return d - c
+    if (c <= a && b <= d) return b - a
+    else if (a <= c && d <= b) return d - c
     else if (c < b && b < d) return b - c
     else if (a < d && d < b) return d - a
-    else if (a == c && b == d) return b - a
     else if (b == c || d == a) return 0
     else return -1
 }
