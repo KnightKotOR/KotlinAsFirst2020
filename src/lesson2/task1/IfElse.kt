@@ -90,12 +90,13 @@ fun timeForHalfWay(
     val s2 = s1 + v2 * t2
     val s3 = s2 + v3 * t3
     val sh = s3 / 2
-    if (s1 == sh) return t1
-    else if (s2 == sh) return t1 + t2
-    else if (sh < s1) return sh / v1
-    else if (s1 < sh && sh < s2) return t1 + (sh - s1) / v2
-    else if (s2 < sh && s2 < s3) return t1 + t2 + (sh - s2) / v3
-    else return 0.0
+    return when {
+        s1 == sh -> t1
+        s2 == sh -> t1 + t2
+        sh < s1 -> sh / v1
+        s1 < sh && sh < s2 -> t1 + (sh - s1) / v2
+        else -> t1 + t2 + (sh - s2) / v3
+    }
 }
 
 /**
@@ -155,12 +156,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val bSquare = b * b
     val cSquare = c * c
     val sumSquare = aSquare + bSquare + cSquare
-    val maxSquare = max(max(aSquare, bSquare), cSquare)
-    val maxSide = max(max(a, b), c)
-    if (maxSide > a + b + c - maxSide) return -1
-    else if (maxSquare < sumSquare - maxSquare) return 0
-    else if (maxSquare == sumSquare - maxSquare) return 1
-    else return 2
+    val maxSquare = maxOf(aSquare, bSquare, cSquare)
+    val maxSide = maxOf(a, b, c)
+    return when{
+        maxSide > a + b + c - maxSide -> -1
+        maxSquare < sumSquare - maxSquare -> 0
+        maxSquare == sumSquare - maxSquare -> 1
+        else -> 2
+    }
 }
 
 /**
@@ -172,10 +175,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if (c <= a && b <= d) return b - a
-    else if (a <= c && d <= b) return d - c
-    else if (c < b && b < d) return b - c
-    else if (a < d && d < b) return d - a
-    else if (b == c || d == a) return 0
-    else return -1
+    return when{
+        c <= a && b <= d -> b - a
+        a <= c && d <= b -> d - c
+        c < b && b < d -> b - c
+        a < d && d < b -> d - a
+        b == c || d == a -> 0
+        else -> -1
+    }
 }
