@@ -68,10 +68,10 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    if (age / 10 == 1 || age / 10 == 11 || age % 10 == 0 || age % 10 >= 5) return "$age лет"
-    else if (age % 10 == 1) return "$age год"
-    else return "$age года"
+fun ageDescription(age: Int): String = when {
+    age / 10 == 1 || age / 10 == 11 || age % 10 == 0 || age % 10 >= 5 -> "$age лет"
+    age % 10 == 1 -> "$age год"
+    else -> "$age года"
 }
 
 /**
@@ -113,11 +113,14 @@ fun whichRookThreatens(
     rookX1: Int, rookY1: Int,
     rookX2: Int, rookY2: Int
 ): Int {
-    if (kingX == rookX1 || kingY == rookY1) {
-        if (kingX == rookX2 || kingY == rookY2) return 3
-        else return 1
-    } else if (kingX == rookX2 || kingY == rookY2) return 2
-    else return 0
+    val rook1: Boolean = kingX == rookX1 || kingY == rookY1
+    val rook2: Boolean = kingX == rookX2 || kingY == rookY2
+    return when{
+        rook1 && rook2 -> 3
+        rook1 -> 1
+        rook2 -> 2
+        else -> 0
+    }
 }
 
 /**
@@ -174,8 +177,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return when{
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = when{
         c <= a && b <= d -> b - a
         a <= c && d <= b -> d - c
         c < b && b < d -> b - c
@@ -183,4 +185,3 @@ fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
         b == c || d == a -> 0
         else -> -1
     }
-}
