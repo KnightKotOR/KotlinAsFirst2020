@@ -76,8 +76,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int =  seconds + minutes * 
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
     val lengthInVershoks = arshins * 16 + sagenes * 48 + vershoks
-    val meters = 0.04445 * lengthInVershoks
-    return meters
+    return 0.04445 * lengthInVershoks
 }
 
 /**
@@ -88,8 +87,8 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double {
  */
 fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
     val sumSec = deg * 3600 + min * 60 + sec
-    val rad = sumSec * PI / (180 * 3600)
-    return rad
+    val secToRadian = PI / (180 * 3600)
+    return sumSec * secToRadian
 }
 
 /**
@@ -101,8 +100,7 @@ fun angleInRadian(deg: Int, min: Int, sec: Int): Double {
 fun trackLength(x1: Double, y1: Double, x2: Double, y2: Double): Double {
     val dx = x2 - x1
     val dy = y2 - y1
-    val length = sqrt(sqr(dx) + sqr(dy))
-    return length
+    return sqrt(sqr(dx) + sqr(dy))
 }
 
 /**
@@ -137,8 +135,7 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
     val doublePercent = percent.toDouble() * 0.01 + 1
     val firstYear = initial * doublePercent
     val secondYear = firstYear * doublePercent
-    val thirdYear = secondYear * doublePercent
-    return thirdYear
+    return secondYear * doublePercent
 }
 
 /**
@@ -147,4 +144,9 @@ fun accountInThreeYears(initial: Int, percent: Int): Double {
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = (number % 10) * 100 + ((number / 10) % 10) * 10 + (number / 100)
+fun numberRevert(number: Int): Int {
+    val firstDigit = number % 10 * 100
+    val secondDigit = number / 10 % 10 * 10
+    val thirdDigit = number / 100
+    return firstDigit + secondDigit + thirdDigit
+}
