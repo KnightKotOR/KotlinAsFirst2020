@@ -32,7 +32,7 @@ fun isNumberHappy(number: Int): Boolean {
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    x1 == x2 || y1 == y2 || x1 - x2 == y1 - y2 || x1 - x2 == y2 - y1
+    x1 == x2 || y1 == y2 || x1 - x2 == kotlin.math.abs(y1 - y2)
 
 
 /**
@@ -47,18 +47,9 @@ fun daysInMonth(month: Int, year: Int): Int {
         return 29
     }
     return when (month) {
-        1 -> 31
+        1, 3, 5, 7, 8, 10, 12 -> 31
         2 -> 28
-        3 -> 31
-        4 -> 30
-        5 -> 31
-        6 -> 30
-        7 -> 31
-        8 -> 31
-        9 -> 30
-        10 -> 31
-        11 -> 30
-        else -> 31
+        else -> 30
     }
 }
 
