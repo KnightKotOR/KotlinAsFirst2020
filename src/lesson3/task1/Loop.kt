@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -72,7 +73,16 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun digitNumber(n: Int): Int = TODO()
+fun digitNumber(n: Int): Int {
+    var count = 0
+    if (n == 0) count++
+    var number = n
+    while (number > 0) {
+        count++
+        number /= 10
+    }
+    return count
+}
 
 /**
  * Простая (2 балла)
@@ -80,7 +90,17 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int {
+    var f1 = 1
+    var f2 = 1
+    var fn = 1
+    for (i in 3..n) {
+        fn = f1 + f2
+        f1 = f2
+        f2 = fn
+    }
+    return fn
+}
 
 /**
  * Простая (2 балла)
@@ -159,7 +179,17 @@ fun isPalindrome(n: Int): Boolean = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    var c = 10
+    for (i in 1..digitNumber(n) - 1) {
+        if (n % 10 != (n / c) % 10) {
+            c = 1
+            break
+        }
+        c *= 10
+    }
+    return c == 1
+}
 
 /**
  * Средняя (4 балла)
