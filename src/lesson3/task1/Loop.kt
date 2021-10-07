@@ -2,7 +2,6 @@
 
 package lesson3.task1
 
-import kotlin.math.pow
 import kotlin.math.sqrt
 import kotlin.math.abs
 
@@ -182,14 +181,11 @@ fun isPalindrome(n: Int): Boolean = TODO()
  */
 fun hasDifferentDigits(n: Int): Boolean {
     var c = 10
-    for (i in 1..digitNumber(n) - 1) {
-        if (n % 10 != (n / c) % 10) {
-            c = 1
-            break
-        }
+    for (i in 1 until digitNumber(n)) {
+        if (n % 10 != (n / c) % 10) return true
         c *= 10
     }
-    return c == 1
+    return false
 }
 
 /**
@@ -223,7 +219,24 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var l = 1
+    var square = 1
+    var d: Int
+    for (i in 2..n) {
+        square = i * i
+        d = digitNumber(square)
+        if (l + d >= n) {
+            while (l + d != n) {
+                square /= 10
+                d -= 1
+            }
+            break
+        }
+        l += d
+    }
+    return square % 10
+}
 
 /**
  * Сложная (5 баллов)
@@ -234,4 +247,21 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var l = 2
+    var f = 1
+    var d: Int
+    for (i in 3..n) {
+        f = fib(i)
+        d = digitNumber(f)
+        if (l + d >= n) {
+            while (l + d != n) {
+                f /= 10
+                d -= 1
+            }
+            break
+        }
+        l += d
+    }
+    return f % 10
+}
