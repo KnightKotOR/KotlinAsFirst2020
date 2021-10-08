@@ -231,11 +231,11 @@ fun squareSequenceDigit(n: Int): Int {
                 square /= 10
                 d -= 1
             }
-            break
+            return square % 10
         }
         l += d
     }
-    return square % 10
+    return square
 }
 
 /**
@@ -259,9 +259,9 @@ fun fibSequenceDigit(n: Int): Int {
                 f /= 10
                 d -= 1
             }
-            break
+            return f % 10
         }
         l += d
     }
-    return f % 10
+    return f
 }
