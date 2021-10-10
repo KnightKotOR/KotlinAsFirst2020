@@ -128,10 +128,9 @@ fun abs(v: List<Double>): Double = TODO()
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-
     var s = 0.0
     val l = list.size
-    for (i in 0..l - 1) {
+    for (i in 0 until l) {
         s += list[i]
     }
     return when (l) {
@@ -151,7 +150,7 @@ fun mean(list: List<Double>): Double {
 fun center(list: MutableList<Double>): MutableList<Double> {
     val m = mean(list)
     val l = list.size
-    for (i in 0..l - 1) {
+    for (i in 0 until l) {
         list.add(i, list[i] - m)
         list.removeAt(i + 1)
     }
@@ -222,7 +221,7 @@ fun factorizeToString(n: Int): String {
     var s = ""
     for (i in 0..list.size - 2) {
         val d = list[i]
-        s += "$d" + "*"
+        s += "$d*"
     }
     s += list.last()
     return s
