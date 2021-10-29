@@ -217,13 +217,7 @@ fun factorize(n: Int): List<Int> {
  */
 fun factorizeToString(n: Int): String {
     val list = factorize(n)
-    val s =  StringBuilder()
-    for (i in 0..list.size - 2) {
-        val d = list[i]
-        s.append("$d*")
-    }
-    s.append(list.last())
-    return s.toString()
+    return list.joinToString(separator = "*")
 }
 
 /**
