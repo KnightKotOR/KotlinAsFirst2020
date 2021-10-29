@@ -222,10 +222,9 @@ fun cos(x: Double, eps: Double): Double = TODO()
 fun squareSequenceDigit(n: Int): Int {
     var l = 1
     var square = 1
-    var d: Int
     for (i in 2..n) {
         square = i * i
-        d = digitNumber(square)
+        var d = digitNumber(square)
         if (l + d >= n) {
             while (l + d != n) {
                 square /= 10
@@ -250,10 +249,9 @@ fun squareSequenceDigit(n: Int): Int {
 fun fibSequenceDigit(n: Int): Int {
     var l = 2
     var f = 1
-    var d: Int
     for (i in 3..n) {
         f = fib(i)
-        d = digitNumber(f)
+        var d = digitNumber(f)
         if (l + d >= n) {
             while (l + d != n) {
                 f /= 10

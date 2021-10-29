@@ -151,8 +151,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
     val m = mean(list)
     val l = list.size
     for (i in 0 until l) {
-        list.add(i, list[i] - m)
-        list.removeAt(i + 1)
+        list[i] -= m
     }
     return list
 }
@@ -218,13 +217,13 @@ fun factorize(n: Int): List<Int> {
  */
 fun factorizeToString(n: Int): String {
     val list = factorize(n)
-    var s = ""
+    val s =  StringBuilder()
     for (i in 0..list.size - 2) {
         val d = list[i]
-        s += "$d*"
+        s.append("$d*")
     }
-    s += list.last()
-    return s
+    s.append(list.last())
+    return s.toString()
 }
 
 /**
