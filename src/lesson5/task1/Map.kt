@@ -339,7 +339,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
             if (j < weight[i - 1]) {
                 d[i][j] = d[i - 1][j]
             } else {
-                d[i][j] = maxOf(d[i - 1][j], d[i - 1][j - weight[i - 1]] + cost[i - 1])
+                d[i][j] = maxOf(d[i - 1][j], d[i - 1][j - weight[i]] + cost[i])
             }
         }
     }
