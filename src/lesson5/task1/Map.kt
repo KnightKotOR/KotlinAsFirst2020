@@ -334,7 +334,7 @@ fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<Strin
     }
     var l = treasures.size
     val d = Array(l + 1) { Array(capacity + 1) { 0 } }
-    for (i in 1..treasures.size) {
+    for (i in 1..l) {
         for (j in 0..capacity) {
             if (j < weight[i - 1]) {
                 d[i][j] = d[i - 1][j]
