@@ -96,7 +96,17 @@ fun buildWordSet(text: List<String>): MutableSet<String> {
  *   buildGrades(mapOf("Марат" to 3, "Семён" to 5, "Михаил" to 5))
  *     -> mapOf(5 to listOf("Семён", "Михаил"), 3 to listOf("Марат"))
  */
-fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
+fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
+    val res = mutableMapOf<Int, MutableList<String>>()
+    for (student in grades) {
+        val (name, grade) = student
+        if (res[grade].isNullOrEmpty())
+            res.put(grade, mutableListOf(name))
+        else
+            res[grade]?.add(name)
+    }
+    return res
+}
 
 /**
  * Простая (2 балла)
@@ -108,7 +118,8 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> = TODO()
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = TODO()
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean  = b == (b + a)
+
 
 /**
  * Простая (2 балла)
@@ -277,7 +288,17 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    for (a in list) {
+        val b = number - a
+        val aIndex = list.indexOf(a)
+        val bIndex = list.indexOf(b)
+        if (b in list && aIndex != bIndex) {
+            return Pair(aIndex, bIndex)
+        }
+    }
+    return Pair(-1, 1)
+}
 
 /**
  * Очень сложная (8 баллов)
@@ -300,4 +321,34 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
  *     450
  *   ) -> emptySet()
  */
-fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> = TODO()
+fun bagPacking(treasures: Map<String, Pair<Int, Int>>, capacity: Int): Set<String> {
+    val res = mutableSetOf<String>()
+    var actualCapcity = capacity
+    val weight = mutableListOf<Int>()
+    val cost = mutableListOf<Int>()
+    val name = mutableListOf<String>()
+    for ((treasure, description) in treasures) {
+        weight.add(description.first)
+        cost.add(description.second)
+        name.add(treasure)
+    }
+    var l = treasures.size
+    val d = Array(l + 1) { Array(capacity + 1) { 0 } }
+    for (i in 1..treasures.size) {
+        for (j in 0..capacity) {
+            if (j < weight[i - 1]) {
+                d[i][j] = d[i - 1][j]
+            } else {
+                d[i][j] = maxOf(d[i - 1][j], d[i - 1][j - weight[i - 1]] + cost[i - 1])
+            }
+        }
+    }
+    while (l > 0) {
+        if (d[l][actualCapcity] != d[l - 1][actualCapcity]) {
+            res.add(name[l - 1])
+            actualCapcity -= weight[l - 1]
+        }
+        l -= 1
+    }
+    return res
+}
