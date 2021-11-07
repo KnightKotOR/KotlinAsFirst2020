@@ -118,7 +118,7 @@ fun buildGrades(grades: Map<String, Int>): Map<Int, List<String>> {
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "z", "b" to "sweet")) -> true
  *   containsIn(mapOf("a" to "z"), mapOf("a" to "zee", "b" to "sweet")) -> false
  */
-fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean  = b == (b + a)
+fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean = b == (b + a)
 
 
 /**
@@ -292,13 +292,13 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
     val listB = list.toMutableList()
     for (a in list) {
         val b = number - a
-        if (b in listB && b != a) {
-            if (b != a){
-                return Pair(list.indexOf(a), list.indexOf(b))
-            }
-            else{
-                listB.remove(a)
-                return Pair(list.indexOf(a), listB.indexOf(b)+1)
+        if (b in list && b != a) {
+            return Pair(list.indexOf(a), list.indexOf(b))
+        }
+        if (b == a) {
+            listB.remove(a)
+            if (b in listB) {
+                return Pair(list.indexOf(a), listB.indexOf(b) + 1)
             }
         }
     }
