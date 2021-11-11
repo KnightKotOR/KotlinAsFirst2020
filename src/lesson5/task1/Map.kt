@@ -294,14 +294,12 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
         val a = list[i]
         val b = number - a
         if (map.containsValue(b)) {
-            println(map)
             return Pair(map[b]!!, i)
         }
         if (b in list) {
             map[a] = i
         }
     }
-    println(map)
     return Pair(-1, -1)
 }
 
