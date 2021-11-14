@@ -149,7 +149,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int {
+fun plusMinus(expression: String): Int? {
     val parts = expression.split(" ")
     if (parts[0].contains("+")) {
         throw IllegalArgumentException(expression)
@@ -164,7 +164,7 @@ fun plusMinus(expression: String): Int {
         if (parts[i - 1] == "+") res += parts[i].toInt()
         else res -= parts[i].toInt()
     }
-    return res!!
+    return res
 }
 
 /**
