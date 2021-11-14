@@ -114,7 +114,18 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    var max = -1
+    val parts = jumps.split(" ")
+    for (part in parts) {
+        if (part != "-" && part != "%") {
+            val number = part.toIntOrNull()
+            if (number == null) return -1
+            else max = maxOf(max, number)
+        }
+    }
+    return max
+}
 
 /**
  * Сложная (6 баллов)
@@ -138,7 +149,23 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    val parts = expression.split(" ")
+    if (parts[0].contains("+")) {
+        throw IllegalArgumentException(expression)
+    }
+    var res = parts[0].toIntOrNull()
+    for (i in 2..parts.size step 2) {
+        if (res == null || parts[i].toIntOrNull() == null || parts[i].toInt() < 0 ||
+            (parts[i - 1] != "+" && parts[i - 1] != "-")
+        ) {
+            throw IllegalArgumentException(expression)
+        }
+        if (parts[i - 1] == "+") res += parts[i].toInt()
+        else res -= parts[i].toInt()
+    }
+    return res!!
+}
 
 /**
  * Сложная (6 баллов)
