@@ -151,20 +151,22 @@ fun bestHighJump(jumps: String): Int = TODO()
  */
 fun plusMinus(expression: String): Int {
     val parts = expression.split(" ")
-    if (parts[0].contains("+")) {
+    if (parts[0].contains("+") || parts[0].contains("-")) {
         throw IllegalArgumentException(expression)
     }
     var res = parts[0].toIntOrNull()
-    for (i in 2..parts.size step 2) {
-        if (res == null || parts[i].toIntOrNull() == null || parts[i].toInt() < 0 ||
-            (parts[i - 1] != "+" && parts[i - 1] != "-")
-        ) {
-            throw IllegalArgumentException(expression)
+    if (res != null) {
+        for (i in 2..parts.size step 2) {
+            if (parts[i].toIntOrNull() == null || parts[i].toInt() < 0 ||
+                (parts[i - 1] != "+" && parts[i - 1] != "-" || parts[i].contains("+"))
+            ) {
+                throw IllegalArgumentException(expression)
+            }
+            if (parts[i - 1] == "+") res += parts[i].toInt()
+            else res -= parts[i].toInt()
         }
-        if (parts[i - 1] == "+") res += parts[i].toInt()
-        else res -= parts[i].toInt()
-    }
-    return res!!
+        return res
+    } else throw IllegalArgumentException(expression)
 }
 
 /**
