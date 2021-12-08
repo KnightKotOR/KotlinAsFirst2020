@@ -255,17 +255,17 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     for (word in words) {
 
         fun difChar(string: String): Boolean {
-            val charSet = mutableSetOf<Char>()
+            var firstSet = setOf<Char>()
             for (c in string) {
-                val secondCharSet = charSet
-                charSet += c
-                if (charSet == secondCharSet) return false
+                val secondSet = firstSet
+                firstSet += c
+                if (secondSet == firstSet) return false
             }
             return true
         }
 
         val l = word.length
-        if (l >= max && difChar(word.lowercase(Locale.getDefault()))) {
+        if (l >= max && difChar(word.toLowerCase())) {
             if (l > max) {
                 maxWord.clear()
                 max = l
@@ -327,7 +327,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for (line in File(inputName).readLines()) {
-        if (line.isEmpty()) {
+        if (line.isBlank()) {
             writer.write("</p>")
             writer.newLine()
             writer.write("<p>")
