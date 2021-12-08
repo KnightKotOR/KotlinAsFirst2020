@@ -151,7 +151,7 @@ fun bestHighJump(jumps: String): Int = TODO()
  */
 fun plusMinus(expression: String): Int {
     val parts = expression.split(" ")
-    if (parts[0].contains("+") || parts[0].contains("-")) {
+    if (parts[0].contains("+") || parts[0].contains("-") || expression.contains(Regex("""^\d+-"""))) {
         throw IllegalArgumentException(expression)
     }
     var res = parts[0].toIntOrNull()
