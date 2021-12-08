@@ -327,7 +327,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for ((i,line) in File(inputName).readLines().withIndex()) {
-        if (i > 0 && File(inputName).readLines()[i-1].isBlank() && line.isNotBlank()) {
+        if (i > 1 && File(inputName).readLines()[i-1].isBlank() && line.isNotBlank()) {
             writer.write("</p>")
             writer.newLine()
             writer.write("<p>")
