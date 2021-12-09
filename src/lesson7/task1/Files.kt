@@ -334,7 +334,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.newLine()
             writer.write("<p>")
             p = false
-            continue
         }
         val htmlLine = StringBuilder("")
 
@@ -372,10 +371,10 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     i += 1
                 }
             }
+            if (i == l -1) p = true
         }
         writer.write(htmlLine.toString())
         writer.newLine()
-        p = true
     }
     writer.write("</p></body></html>")
     writer.close()
