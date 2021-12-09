@@ -343,7 +343,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
         fun closeTag(tag: String) {
-            htmlLine.append(tags.pop().replace("<", "</"))
+            if (tags.isNotEmpty()) htmlLine.append(tags.pop().replace("<", "</"))
         }
 
         var i = 0
