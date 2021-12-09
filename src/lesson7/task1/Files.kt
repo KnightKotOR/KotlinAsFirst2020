@@ -67,18 +67,14 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    val l = File(inputName).readLines()
-    for (line in l) {
-        if (line.isEmpty()) {
-            writer.newLine()
-            continue
+    File(outputName).bufferedWriter().use {
+        val l = File(inputName).readLines()
+        for (line in l) {
+            if (line.startsWith('_')) continue
+            it.write(line)
+            it.newLine()
         }
-        if (line.contains(Regex("""^_"""))) continue
-        writer.write(line)
-        writer.newLine()
     }
-    writer.close()
 }
 
 /**
@@ -248,33 +244,33 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    val writer = File(outputName).bufferedWriter()
-    var max = -1
-    val maxWord = mutableListOf<String>()
-    val words = File(inputName).readLines()
-    for (word in words) {
+    File(outputName).bufferedWriter().use {
+        var max = -1
+        val maxWord = mutableListOf<String>()
+        val words = File(inputName).readLines()
+        for (word in words) {
 
-        fun difChar(string: String): Boolean {
-            var firstSet = setOf<Char>()
-            for (c in string) {
-                val secondSet = firstSet
-                firstSet += c
-                if (secondSet == firstSet) return false
+            fun difChar(string: String): Boolean {
+                var firstSet = setOf<Char>()
+                for (c in string) {
+                    val secondSet = firstSet
+                    firstSet += c
+                    if (secondSet == firstSet) return false
+                }
+                return true
             }
-            return true
-        }
 
-        val l = word.length
-        if (l >= max && difChar(word.toLowerCase())) {
-            if (l > max) {
-                maxWord.clear()
-                max = l
+            val l = word.length
+            if (l >= max && difChar(word.toLowerCase())) {
+                if (l > max) {
+                    maxWord.clear()
+                    max = l
+                }
+                maxWord.add(word)
             }
-            maxWord.add(word)
         }
+        it.write(maxWord.joinToString(separator = ", "))
     }
-    writer.write(maxWord.joinToString(separator = ", "))
-    writer.close()
 }
 
 /**
@@ -323,59 +319,60 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    var tags = stack<String>()
-    var p = false
-    val writer = File(outputName).bufferedWriter()
-    writer.write("<html><body><p>")
-    for ((i, line) in File(inputName).readLines().withIndex()) {
-        if (line.isBlank()) continue
-        if (i > 0 && p && File(inputName).readLines()[i - 1].isBlank()) {
-            writer.write("</p>")
-            writer.newLine()
-            writer.write("<p>")
-        }
-        val htmlLine = StringBuilder("")
-
-        fun correction(tag: String) {
-            if (tags.isNotEmpty() && tags.top == tag) {
-                htmlLine.append(tags.pop().replace("<", "</"))
-            } else {
-                tags.push(tag)
-                htmlLine.append(tag)
+    File(outputName).bufferedWriter().use {
+        val lines = File(inputName).readLines()
+        var tags = stack<String>()
+        var p = false
+        it.write("<html><body><p>")
+        for ((i, line) in lines.withIndex()) {
+            if (line.isBlank()) continue
+            if (i > 0 && p && File(inputName).readLines()[i - 1].isBlank()) {
+                it.write("</p>")
+                it.newLine()
+                it.write("<p>")
             }
-        }
+            val htmlLine = StringBuilder("")
 
-        var i = 0
-        val l = line.length
-        while (i < l) {
-            p = true
-            when (line[i]) {
-                '*' -> {
-                    if (i + 1 < l && line[i + 1] == '*') {
-                        correction("<b>")
-                        i += 2
-                    } else {
-                        correction("<i>")
+            fun correction(tag: String) {
+                if (tags.isNotEmpty() && tags.top == tag) {
+                    htmlLine.append(tags.pop().replace("<", "</"))
+                } else {
+                    tags.push(tag)
+                    htmlLine.append(tag)
+                }
+            }
+
+            var i = 0
+            val l = line.length
+            while (i < l) {
+                p = true
+                when (line[i]) {
+                    '*' -> {
+                        if (i + 1 < l && line[i + 1] == '*') {
+                            correction("<b>")
+                            i += 2
+                        } else {
+                            correction("<i>")
+                            i += 1
+                        }
+                    }
+                    '~' -> {
+                        if (i + 1 < l && line[i + 1] == '~') {
+                            correction("<s>")
+                            i += 2
+                        }
+                    }
+                    else -> {
+                        htmlLine.append(line[i])
                         i += 1
                     }
                 }
-                '~' -> {
-                    if (i + 1 < l && line[i + 1] == '~') {
-                        correction("<s>")
-                        i += 2
-                    }
-                }
-                else -> {
-                    htmlLine.append(line[i])
-                    i += 1
-                }
             }
+            it.write(htmlLine.toString())
+            it.newLine()
         }
-        writer.write(htmlLine.toString())
-        writer.newLine()
+        it.write("</p></body></html>")
     }
-    writer.write("</p></body></html>")
-    writer.close()
 }
 
 /**
