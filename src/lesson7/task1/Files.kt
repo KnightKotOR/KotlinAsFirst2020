@@ -349,6 +349,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         var i = 0
         val l = line.length
         while (i < l) {
+            if (i == l - 1) p = true
             when (line[i]) {
                 '*' -> {
                     if (i + 1 < l && line[i + 1] == '*') {
@@ -371,7 +372,6 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     i += 1
                 }
             }
-            if (i == l - 1) p = true
         }
         writer.write(htmlLine.toString())
         writer.newLine()
