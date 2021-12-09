@@ -328,7 +328,8 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for ((i, line) in File(inputName).readLines().withIndex()) {
-        if (i > 0 && File(inputName).readLines()[i - 1].isBlank() && line.isNotBlank()) {
+        if (line.isBlank()) continue
+        if (i > 0 && File(inputName).readLines()[i - 1].isBlank()) {
             if (!p) continue
             writer.write("</p>")
             writer.newLine()
@@ -337,13 +338,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
         val htmlLine = StringBuilder("")
 
-        fun stackOfTags(tag: String){
-            tags.push(tag)
-            htmlLine.append(tag)
-        }
-
-        fun closeTag(tag: String) {
-            if (tags.isNotEmpty()) htmlLine.append(tags.pop().replace("<", "</"))
+        fun correction(tag: String) {
+            if (tags.isNotEmpty() && tags.top == tag) {
+                htmlLine.append(tags.pop().replace("<", "</"))
+            } else {
+                tags.push(tag)
+                htmlLine.append(tag)
+            }
         }
 
         var i = 0
@@ -353,19 +354,16 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             when (line[i]) {
                 '*' -> {
                     if (i + 1 < l && line[i + 1] == '*') {
-                        if (tags.top != "<b>") stackOfTags("<b>")
-                        else closeTag("<b>")
+                        correction("<b>")
                         i += 2
                     } else {
-                        if (tags.top != "<i>") stackOfTags("<i>")
-                        else closeTag("<i>")
+                        correction("<i>")
                         i += 1
                     }
                 }
                 '~' -> {
                     if (i + 1 < l && line[i + 1] == '~') {
-                        if (tags.top != "<s>") stackOfTags("<s>")
-                        else closeTag("<s>")
+                        correction("<s>")
                         i += 2
                     }
                 }
