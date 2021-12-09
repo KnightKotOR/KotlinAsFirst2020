@@ -324,9 +324,9 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var tags = stack<String>()
+    var p = false
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
-    var p = false
     for ((i, line) in File(inputName).readLines().withIndex()) {
         if (i > 0 && File(inputName).readLines()[i - 1].isBlank() && line.isNotBlank()) {
             if (!p) continue
@@ -334,6 +334,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             writer.newLine()
             writer.write("<p>")
             p = false
+            continue
         }
         val htmlLine = StringBuilder("")
 
@@ -347,10 +348,11 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
 
         var i = 0
-        while (i < line.length) {
+        val l = line.length
+        while (i < l) {
             when (line[i]) {
                 '*' -> {
-                    if (i + 1 < line.length && line[i + 1] == '*') {
+                    if (i + 1 < l && line[i + 1] == '*') {
                         correction("<b>")
                         i += 2
                     } else {
@@ -359,7 +361,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     }
                 }
                 '~' -> {
-                    if (i + 1 < line.length && line[i + 1] == '~') {
+                    if (i + 1 < l && line[i + 1] == '~') {
                         correction("<s>")
                         i += 2
                     }
