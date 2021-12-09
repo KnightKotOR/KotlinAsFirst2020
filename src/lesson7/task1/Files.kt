@@ -337,13 +337,13 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         }
         val htmlLine = StringBuilder("")
 
-        fun correction(tag: String) {
-            if (tags.isNotEmpty() && tags.top == tag) {
-                htmlLine.append(tags.pop().replace("<", "</"))
-            } else {
-                tags.push(tag)
-                htmlLine.append(tag)
-            }
+        fun stackOfTags(tag: String){
+            tags.push(tag)
+            htmlLine.append(tag)
+        }
+
+        fun closeTag(tag: String) {
+            htmlLine.append(tags.pop().replace("<", "</"))
         }
 
         var i = 0
@@ -353,20 +353,22 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
             when (line[i]) {
                 '*' -> {
                     if (i + 1 < l && line[i + 1] == '*') {
-                        correction("<b>")
+                        if (tags.top != "<b>") stackOfTags("<b>")
+                        else closeTag("<b>")
                         i += 2
                     } else {
-                        correction("<i>")
+                        if (tags.top != "<i>") stackOfTags("<i>")
+                        else closeTag("<i>")
                         i += 1
                     }
                 }
                 '~' -> {
                     if (i + 1 < l && line[i + 1] == '~') {
-                        correction("<s>")
+                        if (tags.top != "<s>") stackOfTags("<s>")
+                        else closeTag("<s>")
                         i += 2
                     }
                 }
-
                 else -> {
                     htmlLine.append(line[i])
                     i += 1
