@@ -371,7 +371,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
                     i += 1
                 }
             }
-            if (i == l -1) p = true
+            if (i == l - 1) p = true
         }
         writer.write(htmlLine.toString())
         writer.newLine()
