@@ -324,13 +324,12 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  */
 fun markdownToHtmlSimple(inputName: String, outputName: String) {
     var tags = stack<String>()
-    var p = true
+    var p = false
     val writer = File(outputName).bufferedWriter()
     writer.write("<html><body><p>")
     for ((i, line) in File(inputName).readLines().withIndex()) {
         if (line.isBlank()) continue
-        if (i > 0 && File(inputName).readLines()[i - 1].isBlank()) {
-            if (!p) continue
+        if (i > 0 && p && File(inputName).readLines()[i - 1].isBlank()) {
             writer.write("</p>")
             writer.newLine()
             writer.write("<p>")
