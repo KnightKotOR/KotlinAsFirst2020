@@ -2,11 +2,13 @@
 
 package lesson7.task1
 
+
+import ru.spbstu.wheels.Stack
 import ru.spbstu.wheels.isNotEmpty
 import ru.spbstu.wheels.stack
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayDeque
+
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -244,31 +246,31 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
 fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    File(outputName).bufferedWriter().use {
-        var max = -1
-        val maxWord = mutableListOf<String>()
-        val words = File(inputName).readLines()
-        for (word in words) {
+    var max = -1
+    val maxWord = mutableListOf<String>()
+    val words = File(inputName).readLines()
+    for (word in words) {
 
-            fun difChar(string: String): Boolean {
-                var firstSet = setOf<Char>()
-                for (c in string) {
-                    val secondSet = firstSet
-                    firstSet += c
-                    if (secondSet == firstSet) return false
-                }
-                return true
+        fun difChar(string: String): Boolean {
+            var firstSet = setOf<Char>()
+            for (c in string) {
+                val secondSet = firstSet
+                firstSet += c
+                if (secondSet == firstSet) return false
             }
-
-            val l = word.length
-            if (l >= max && difChar(word.toLowerCase())) {
-                if (l > max) {
-                    maxWord.clear()
-                    max = l
-                }
-                maxWord.add(word)
-            }
+            return true
         }
+
+        val l = word.length
+        if (l >= max && difChar(word.toLowerCase())) {
+            if (l > max) {
+                maxWord.clear()
+                max = l
+            }
+            maxWord.add(word)
+        }
+    }
+    File(outputName).bufferedWriter().use {
         it.write(maxWord.joinToString(separator = ", "))
     }
 }
@@ -326,7 +328,7 @@ fun markdownToHtmlSimple(inputName: String, outputName: String) {
         it.write("<html><body><p>")
         for ((i, line) in lines.withIndex()) {
             if (line.isBlank()) continue
-            if (i > 0 && p && File(inputName).readLines()[i - 1].isBlank()) {
+            if (i > 0 && p && lines[i - 1].isBlank()) {
                 it.write("</p>")
                 it.newLine()
                 it.write("<p>")
@@ -540,5 +542,165 @@ fun printMultiplicationProcess(lhv: Int, rhv: Int, outputName: String) {
  */
 fun printDivisionProcess(lhv: Int, rhv: Int, outputName: String) {
     TODO()
+    /*
+    File(outputName).bufferedWriter().use {
+        it.write(" $lhv | $rhv\n")
+        val res = lhv / rhv
+        val lhvLength = lhv.toString().length
+        val resLength = res.toString().length
+        val lhvDigitals = mutableListOf<Int>()
+        val resDigitals = mutableListOf<Int>()
+        var indent = 1
+        var curRes = 0
+
+        fun digitals(n: Int, list: MutableList<Int>) {
+            for (i in n.toString()) {
+                list.add(i.code)
+            }
+            list.reverse()
+        }
+
+        digitals(lhv, lhvDigitals)
+        digitals(res, resDigitals)
+
+        fun indentFun(indent: Int) {
+            it.write(" ".repeat(indent))
+        }
+
+        fun ss(list1: MutableList<Int>, list2: MutableList<Int>, n2: Int) {
+            var n1 = 0
+            var l = 0
+            while (l < list2.size) {
+                n1 = n1 * 10 + list1[0]
+                list1.removeAt(0)
+            }
+            curRes = n1 - n2
+            indent += l
+        }
+
+        for (i in 0 until resLength) {
+            var curSub = rhv * resDigitals[i]
+            val curLen = curSub.toString().length
+            var curLhv = 0
+            if (curLen == 1){
+                indent++
+            }
+            var subStack = stack<Int>()
+            createStack(subNumber, subStack)
+            indentFun(indent-1)
+            it.write("-$curSub")
+            if (i == 0) {
+                it.write(" ".repeat(lhvLength - curLen + 3))
+                it.write("$res")
+            }
+            it.newLine()
+            indentFun(indent-1)
+            it.write("-".repeat(curLen + 1))
+            it.newLine()
+            ss(lhvStack, subStack)
+            indentFun(indent)
+            if(lhvStack.top == null){
+                it.write("0")
+
+            }
+            else {
+                var s = curRes
+                if (i != resLength - 1){
+                    s = s * 10 + nextDigit
+                }
+                it.write("$s")
+            }
+            it.newLine()
+        }
+        }
+
+    }
+
+     */
+
+/*
+    File(outputName).bufferedWriter().use {
+        it.write(" $lhv | $rhv\n")
+        val res = lhv / rhv
+        val resLength = res.toString().length
+        val resDigitals = mutableListOf<Int>()
+        val lhvLength = lhv.toString().length
+        var lhvStack = stack<Int>()
+        var indent = 1
+        var curRes = 0
+        var nextDigit = 0
+        var temp = res
+        for (i in 0 until resLength) {
+            resDigitals.add(temp%10)
+            temp/=10
+        }
+        resDigitals.reverse()
+
+        fun createStack(n: Int, stack: Stack<Int>) {
+            var temp = n
+            while (temp != 0) {
+                stack.push(temp % 10)
+                temp /= 10
+            }
+        }
+
+        createStack(lhv, lhvStack)
+
+        fun ss(lhvStack: Stack<Int>, subStack: Stack<Int>) {
+            if (subStack.isNotEmpty() && lhvStack.isNotEmpty()) {
+                var counter = 0
+                while (lhvStack.top == subStack.top) {
+                    lhvStack.pop()
+                    subStack.pop()
+                    counter++
+                }
+                curRes = lhvStack.top!! - subStack.top!!
+                lhvStack.pop()
+                if (lhvStack.top != null) nextDigit = lhvStack.top!!
+                lhvStack.push(curRes)
+                indent += counter
+            }
+        }
+
+        fun indentFun(indent: Int) {
+            it.write(" ".repeat(indent))
+        }
+
+        for (i in 0 until resLength) {
+            val subNumber = rhv * resDigitals[i]
+            val subLength = subNumber.toString().length
+            var curLhv = 0
+            if (subLength == 1){
+                indent++
+            }
+            var subStack = stack<Int>()
+            createStack(subNumber, subStack)
+            indentFun(indent-1)
+            it.write("-$subNumber")
+            if (i == 0) {
+                it.write(" ".repeat(lhvLength - subLength + 3))
+                it.write("$res")
+            }
+            it.newLine()
+            indentFun(indent-1)
+            it.write("-".repeat(subLength + 1))
+            it.newLine()
+            ss(lhvStack, subStack)
+            indentFun(indent)
+            if(lhvStack.top == null){
+                it.write("0")
+
+            }
+            else {
+                var s = curRes
+                if (i != resLength - 1){
+                    s = s * 10 + nextDigit
+                }
+                it.write("$s")
+            }
+            it.newLine()
+        }
+    }
+     */
 }
 
