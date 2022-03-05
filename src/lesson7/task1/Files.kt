@@ -7,8 +7,8 @@ import ru.spbstu.wheels.Stack
 import ru.spbstu.wheels.isNotEmpty
 import ru.spbstu.wheels.stack
 import java.io.File
-import java.util.*
-
+import java.lang.IllegalArgumentException
+import java.lang.Integer.max
 
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
@@ -88,7 +88,31 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> = TODO()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val result = mutableMapOf<String, Int>()
+    for (substring in substrings) {
+        result[substring] = 0
+    }
+    for (substring in substrings) {
+        if (result[substring] == 0) {
+            File(inputName).forEachLine { line ->
+                var count = 0
+                var pos = 0
+                while (true) {
+                    pos = line.indexOf(substring, pos, ignoreCase = true)
+                    if (pos != -1) {
+                        count++
+                        pos++
+                    } else {
+                        result[substring] = result[substring]!! + count
+                        break
+                    }
+                }
+            }
+        }
+    }
+    return result
+}
 
 
 /**
@@ -104,9 +128,28 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
+const val lettersb = "жчшщЖЧШЩ"
+val lettersa = mapOf<Char, Char>('Ы' to 'И', 'Я' to 'А', 'Ю' to 'У', 'ы' to 'и', 'я' to 'а', 'ю' to 'у')
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    try {
+        File(inputName).forEachLine { line ->
+            var newLine = line
+            var b = '1'
+            for (a in line) {
+                if (b in lettersb && a in lettersa.keys)
+                    newLine = newLine.replace(b.toString() + a, b.toString() + lettersa[a])
+                b = a
+            }
+            writer.write(newLine)
+            writer.newLine()
+        }
+    } catch (e: IllegalArgumentException) {
+        writer.close()
+    }
+    writer.close()
 }
+
 
 /**
  * Средняя (15 баллов)
@@ -126,7 +169,24 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    var nmax = 0
+    val writer = File(outputName).bufferedWriter()
+    File(inputName).forEachLine { line ->
+        val str = line.trim().split("\\s".toRegex()).joinToString(" ")
+        nmax = max(nmax, str.length)
+    }
+    File(inputName).forEachLine { line ->
+        var nLine = ""
+        val str = line.trim().split("\\s".toRegex()).joinToString(" ")
+        val n = str.length
+        for (i in 1..(nmax - n) / 2) {
+            nLine += " "
+        }
+        writer.write(nLine + str)
+        writer.newLine()
+    }
+    writer.close()
+
 }
 
 /**
@@ -180,7 +240,9 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    TODO()
+}
 
 /**
  * Средняя (14 баллов)

@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import java.lang.Math.abs
 import kotlin.math.sqrt
 import kotlin.math.abs
 
@@ -74,14 +75,13 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun digitNumber(n: Int): Int {
-    var count = 0
-    if (n == 0) count++
-    var number = n
-    while (abs(number) > 0) {
-        count++
-        number /= 10
+    var num = abs(n)
+    var c = 1
+    while (num > 9) {
+        c += 1
+        num /= 10
     }
-    return count
+    return c
 }
 
 /**
@@ -91,15 +91,15 @@ fun digitNumber(n: Int): Int {
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
 fun fib(n: Int): Int {
-    var f1 = 1
-    var f2 = 1
-    var fn = 1
-    for (i in 3..n) {
-        fn = f1 + f2
-        f1 = f2
-        f2 = fn
+    var fib1 = 1
+    var fib2 = 1
+    var fibsum = 2
+    for (i in 1..n - 2) {
+        fibsum = fib1 + fib2
+        fib1 = fib2
+        fib2 = fibsum
     }
-    return fn
+    return fib2
 }
 
 /**
@@ -220,21 +220,18 @@ fun cos(x: Double, eps: Double): Double = TODO()
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var l = 1
-    var square = 1
-    for (i in 2..n) {
-        square = i * i
-        var d = digitNumber(square)
-        if (l + d >= n) {
-            while (l + d != n) {
-                square /= 10
-                d -= 1
-            }
-            return square % 10
+    var quant = 0
+    var squar = 0
+    for (i in 1..n) {
+        if (quant < n) {
+            squar = i * i
+            quant += digitNumber(squar)
         }
-        l += d
     }
-    return square
+    for (i in 0 until quant - n) {
+        squar /= 10
+    }
+    return squar % 10
 }
 
 /**
@@ -247,19 +244,16 @@ fun squareSequenceDigit(n: Int): Int {
  * Использовать операции со строками в этой задаче запрещается.
  */
 fun fibSequenceDigit(n: Int): Int {
-    var l = 2
-    var f = 1
-    for (i in 3..n) {
-        f = fib(i)
-        var d = digitNumber(f)
-        if (l + d >= n) {
-            while (l + d != n) {
-                f /= 10
-                d -= 1
-            }
-            return f % 10
+    var quant = 0
+    var fibn = 0
+    for (i in 1..n) {
+        if (quant < n) {
+            fibn = fib(i)
+            quant += digitNumber(fibn)
         }
-        l += d
     }
-    return f
+    for (i in 0 until quant - n) {
+        fibn /= 10
+    }
+    return fibn % 10
 }

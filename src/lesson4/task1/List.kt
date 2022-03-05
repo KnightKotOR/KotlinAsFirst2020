@@ -3,12 +3,14 @@
 package lesson4.task1
 
 import lesson1.task1.discriminant
+import java.io.File.separator
 import kotlin.math.sqrt
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
 // Рекомендуемое количество баллов = 8
 // Вместе с предыдущими уроками = 24/33
+
 
 /**
  * Пример
@@ -273,7 +275,13 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+val ones1 = listOf("", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX")
+val tens1 = listOf("", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC")
+val hunds1 = listOf("", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM")
+val thous = listOf("", "M", "MM", "MMM")
+fun roman(n: Int): String {
+    return thous[n / 1000 % 10] + hunds1[n / 100 % 10] + tens1[n / 10 % 10] + ones1[n % 10]
+}
 
 /**
  * Очень сложная (7 баллов)
@@ -282,4 +290,43 @@ fun roman(n: Int): String = TODO()
  * Например, 375 = "триста семьдесят пять",
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
-fun russian(n: Int): String = TODO()
+val ones = listOf("", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+val hones = listOf("", "одна", "две", "три", "четыре", "пять", "шесть", "семь", "восемь", "девять")
+val tens = listOf("", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят", "девяносто")
+val hunds = listOf("", "сто", "двести", "триста", "четыреста", "пятьсот", "шестьсот", "семьсот", "восемьсот", "девятьсот")
+val teens = listOf("десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать", "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать")
+fun russian(n: Int): String {
+    val res = mutableListOf<String>()
+
+    val (t, o) = if (n / 10 % 10 == 1) {
+        teens[n % 10] to ""
+    } else {
+        tens[n / 10 % 10] to ones[n % 10]
+    }
+    val h = hunds[n / 100 % 10]
+
+    var (to, thousand) = if (n / 1000 % 10 == 0 && n / 10000 % 10 == 0 && n / 100000 % 10 == 0) {
+        "" to ""
+    } else if (n / 1000 % 10 == 1) {
+        "одна" to "тысяча"
+    } else if (n / 1000 % 10 == 2 || n / 1000 % 10 == 3 || n / 1000 % 10 == 4) {
+        hones[n / 1000 % 10] to "тысячи"
+    } else {
+        ones[n / 1000 % 10] to "тысяч"
+    }
+
+    val tt: String
+    if (n / 10000 % 10 == 1) {
+        to = ""
+        tt = teens[n / 1000 % 10]
+        thousand = "тысяч"
+    } else tt = tens[n / 10000 % 10]
+
+    val th = hunds[n / 100000 % 10]
+
+    res.addAll(listOf(th, tt, to, thousand, h, t, o))
+    res.removeAll(listOf(""))
+
+    return res.joinToString(" ")
+}
+
