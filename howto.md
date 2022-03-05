@@ -7,7 +7,7 @@
 - Создаю ветку backport и перехожу на нее
 `git checkout -b backport `
 - Переношу решения из upstream-my в backport
-git cherry-pick d535f3592006b8f2593c9f881d72c05164aadc13...FETCH_HEAD`
+`git cherry-pick d535f3592006b8f2593c9f881d72c05164aadc13...FETCH_HEAD`
 - Указываю в качестве второго апстрима форк KotlinAsFirst2021 пары
 `git remote add -f upstream-theirs https://github.com/yrmint/KotlinAsFirst2021.git`
 - Перехожу на мастер
